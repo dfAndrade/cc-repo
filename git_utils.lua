@@ -1,3 +1,5 @@
+require "libs.json"
+
 tArgs = {...}
 
 if  #tArgs == 0 then
@@ -49,5 +51,10 @@ if option == 'get' then
     print('working on it...')
 elseif option == 'ls' then
     local response = git_ls()
-    print(response)
+    local res = json.parse(response)
+    
+    for file_idx = 1, #res do
+        print(res[file_idx]['path'])
+    end
+    print(res['path'])
 end
