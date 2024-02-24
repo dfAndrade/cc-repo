@@ -29,13 +29,21 @@ function ls_into_repo(path)
     return parsed
 end
 
+function remove_filter_path(raw_path)
+    local res = raw_path
+    if paths not nil:
+            res = string.gsub(raw_path, paths, "")
+    return res
+end
+
 function pull()
     local parsed = ls_into_repo(paths)
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
     for i, v in pairs(parsed) do
         local data = v
-        local target_path = fs.combine(cur_dir, data['path'])
+        
+        local target_path = fs.combine(cur_dir, remove_filter_path(data['path']))
         local source_path = data['path']
         
         shell.run("git", "get", author, proj, branch, source_path, target_path)
@@ -77,7 +85,6 @@ saveName = tArgs[6]
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
-    -- write('Fetching: '..url..'... ')
     http.request(url)
     local requesting = true
     while requesting do
