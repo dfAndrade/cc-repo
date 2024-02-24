@@ -62,7 +62,13 @@ elseif option == 'ls' then
 
     local res_size = t_len(res)
     for file_idx = 1, res_size do
-        print(res[file_idx]['path'])
+        local data = res[file_idx]
+        local path = data['path']
+        if data['type'] == 'dir' then
+            print(path..'/')
+        else
+            print(path)
+        end
     end
 
    print('N of files: '..res_size)
