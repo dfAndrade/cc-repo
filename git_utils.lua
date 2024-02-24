@@ -16,12 +16,13 @@ function ls_into_repo(path)
     for file_idx = 1, res_size do
         local data = res[file_idx]
         local p_data = filter_relevant_fields(data)
+        print(json.stringify(p_data))
         parsed[p_data['path']] = p_data
 
         if parsed['type'] == 'dir' then
             local r_files = ls_into_repo(parsed['path'])
             local r_size = t_len(r_files)
-            for i, v in ipairs(res) do
+            for i, v in pairs(res) do
                 parsed[i] = v
             end
         end
@@ -34,7 +35,7 @@ function pull()
     local parsed = ls_into_repo()
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
-    for i, v in ipairs(parsed) do
+    for i, v in pairs(parsed) do
         local data = v
         local target_path = fs.combine(cur_dir, data['path'])
         local source_path = data['path']
@@ -121,7 +122,7 @@ elseif option == 'ls' then
     print('')
     print('N of files: '..res_size)
     print('-----')
-    for i, v in ipairs(res) do
+    for i, v in pairs(res) do
         local path = v['path']
         if v['type'] == 'dir' then
             print(path..'/')
