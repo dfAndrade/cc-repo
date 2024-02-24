@@ -33,7 +33,7 @@ function requestObject(url)
 end
 
 function compileURL(auth,pro,bran,pat)
-    baseURL = '  https://api.github.com/repos/'..auth..'/'..pro..'/contents/'..pat
+    baseURL = 'https://api.github.com/repos/'..auth..'/'..pro..'/contents/'..pat
     return baseURL
 end
 
