@@ -23,7 +23,7 @@ saveName = tArgs[6]
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
-    write('Fetching: '..url..'... ')
+    print('Fetching: '..url..'... ')
     http.request(url)
     local requesting = true
     while requesting do
