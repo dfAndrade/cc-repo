@@ -34,7 +34,7 @@ end
 function filter_relevant_fields(raw)
     local parsed = {}
     parsed['path'] = raw['path']
-    parsed['path'] = raw['path']
+    parsed['name'] = raw['name']
     parsed['type'] = raw['type']
    return parsed
 end
@@ -91,6 +91,7 @@ if option == 'get' then
     print('working on it...')
 elseif option == 'ls' then
     local response = git_ls()
+    if not response then return end
     local res = json.parse(response)
 
     local res_size = t_len(res)
