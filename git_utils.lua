@@ -32,10 +32,11 @@ function pull()
 end
 
 function filter_relevant_fields(raw)
-    let parsed = {}
+    local parsed = {}
     parsed['path'] = raw['path']
     parsed['path'] = raw['path']
     parsed['type'] = raw['type']
+   return parsed
 end
 
 tArgs = {...}
