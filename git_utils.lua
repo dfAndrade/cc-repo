@@ -1,5 +1,11 @@
 local json = require "libs.json"
 
+function t_len(T)
+   local count = 0
+   for _ in pairs(T) do count = count + 1 end
+   return count
+end
+
 tArgs = {...}
 
 if  #tArgs == 0 then
@@ -52,10 +58,11 @@ if option == 'get' then
 elseif option == 'ls' then
     local response = git_ls()
     local res = json.parse(response)
-    
-    for file_idx = 1, #res do
+
+    local res_size = t_len(res)
+    for file_idx = 1, res_size do
         print(res[file_idx]['path'])
     end
 
-   print('N of files: '..#res)
+   print('N of files: '..res_size)
 end
