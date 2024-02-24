@@ -28,7 +28,7 @@ function pull()
         local target_path = fs.combine(cur_dir, data['path'])
         local source_path = data['path']
         
-        shell.run("git", author, proj, branch, source_path, target_path)
+        shell.run("git", "get", author, proj, branch, source_path, target_path)
     end
 end
 
