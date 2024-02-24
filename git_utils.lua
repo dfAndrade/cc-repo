@@ -21,8 +21,7 @@ function ls_into_repo(path)
 
         if p_data['type'] == 'dir' then
             local r_files = ls_into_repo(p_data['path'])
-            local r_size = t_len(r_files)
-            for i, v in pairs(res) do
+            for i, v in pairs(r_files) do
                 parsed[i] = v
             end
         end
