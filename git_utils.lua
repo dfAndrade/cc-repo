@@ -23,12 +23,13 @@ saveName = tArgs[6]
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
-    print('Fetching: '..url..'... ')
+    write('Fetching: '..url..'... ')
     http.request(url)
     local requesting = true
     while requesting do
         local event, url, sourceText = os.pullEvent()
         if event == "http_success" then
+            print("Fetch success!")
             local respondedText = sourceText.readAll()
             requesting = false
             return respondedText
