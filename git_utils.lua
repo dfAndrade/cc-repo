@@ -1,11 +1,15 @@
 -- local folderOfThisFile = (...):match("(.-)[^%.]+$") -- returns 'lib.foo.'
-local json = require ".libs.lua.json"
 -- local json = require(folderOfThisFile .. 'libs.json')
+local json = require ".libs.lua.json"
 
 function t_len(T)
    local count = 0
    for _ in pairs(T) do count = count + 1 end
    return count
+end
+
+function load_sotred_args() 
+    fs.open(
 end
 
 function ls_into_repo(path)
@@ -72,9 +76,20 @@ end
 
 tArgs = {...}
 
+storedArgs = loadStoredArgs()
+
 if  #tArgs == 0 then
    print('Usage: git [get/pull/ls] [git owner] [repository] [branch] [path] {file-name}')
    return false
+end
+
+if  #tArgs == 1 then
+    if tArgs[1] == "ls" then
+        
+    else
+        print('Usage: git [get/pull/ls] [git owner] [repository] [branch] [path] {file-name}')
+        return false
+    end
 end
 
 option = tArgs[1]
@@ -137,4 +152,6 @@ elseif option == 'ls' then
     end
 elseif option == 'pull' then
     pull()
+elseif option == 'get' then
+    
 end
