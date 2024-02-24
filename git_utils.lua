@@ -19,8 +19,8 @@ function ls_into_repo(path)
         print(json.stringify(p_data))
         parsed[p_data['path']] = p_data
 
-        if parsed['type'] == 'dir' then
-            local r_files = ls_into_repo(parsed['path'])
+        if p_data['type'] == 'dir' then
+            local r_files = ls_into_repo(p_data['path'])
             local r_size = t_len(r_files)
             for i, v in pairs(res) do
                 parsed[i] = v
