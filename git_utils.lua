@@ -9,8 +9,14 @@ function t_len(T)
 end
 
 function load_stored_args() 
-    local state = fs.open("/.git/state", r)
-    local content = json.parse(state.readAll())
+    local state = fs.open("/.git/state", "r")
+    local raw = state.readAll()
+    local content
+    if raw == "" then
+        content = "{}"
+    end
+    
+    content = json.parse(raw)
     print(content)
     print(json.stringify(content))
     state.close()
