@@ -30,7 +30,7 @@ function ls_into_repo(path)
 end
 
 function pull()
-    local parsed = ls_into_repo()
+    local parsed = ls_into_repo(paths)
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
     for i, v in pairs(parsed) do
@@ -111,7 +111,7 @@ end
 if option == 'get' then
     print('working on it...')
 elseif option == 'ls' then
-    local res = ls_into_repo()
+    local res = ls_into_repo(paths)
     if not res then return end
 
     local res_size = t_len(res)
