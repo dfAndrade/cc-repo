@@ -56,5 +56,6 @@ elseif option == 'ls' then
     for file_idx = 1, #res do
         print(res[file_idx]['path'])
     end
-    print(res['path'])
+
+   print('N of files: '..#res)
 end
