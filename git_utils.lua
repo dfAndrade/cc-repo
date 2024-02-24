@@ -1,4 +1,6 @@
-local json = require "libs.json"
+local folderOfThisFile = (...):match("(.-)[^%.]+$") -- returns 'lib.foo.'
+-- local json = require "libs.json"
+require(folderOfThisFile .. 'libs.json')
 
 function t_len(T)
    local count = 0
@@ -19,9 +21,8 @@ function ls_into_repo(path)
         if parsed['type'] == 'dir' then
             local r_files = ls_into_repo(parsed['path'])
             local r_size = t_len(r_files)
-            for file_idx = 1, r_size do
-                local data = res[file_idx]
-                parsed[data['path']] = data
+            for i, v in ipairs(res) do
+                parsed[i] = v
             end
         end
     end
