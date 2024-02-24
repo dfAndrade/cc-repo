@@ -17,8 +17,6 @@ function load_stored_args()
     end
     
     content = json.parse(content)
-    print(content)
-    print(json.stringify(content))
     state.close()
     return content
 end
@@ -66,49 +64,7 @@ function pull()
     end
 end
 
-function pullDir(table)
-   local res_size = t_len(parsed)
-    for file_idx = 1, res_size do
-        local data = parsed[file_idx]
-        local target_path = fs.combine(cur_dir, data['path'])
-        local source_path = data['path']
-        
-        shell.run("git", "get", author, proj, branch, source_path, target_path)
-    end
-end
-
-function filter_relevant_fields(raw)
-    local parsed = {}
-    parsed['path'] = raw['path']
-    parsed['name'] = raw['name']
-    parsed['type'] = raw['type']
-   return parsed
-end
-
-tArgs = {...}
-
-storedArgs = load_stored_args()
-
-if  #tArgs == 0 then
-   print('Usage: git [get/pull/ls] [git owner] [repository] [branch] [path] {file-name}')
-   return false
-end
-
-if  #tArgs == 1 then
-    if tArgs[1] == "ls" then
-        
-    else
-        print('Usage: git [get/pull/ls] [git owner] [repository] [branch] [path] {file-name}')
-        return false
-    end
-end
-
-option = tArgs[1]
-author = tArgs[2]
-proj = tArgs[3]
-branch = tArgs[4]
-paths = tArgs[5]
-saveName = tArgs[6]
+-- Update values from state
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
@@ -143,6 +99,144 @@ function git_ls(p)
     return requestObject(compileURL(author, proj, branch, p))
 end
 
+function pullDir(table)
+   local res_size = t_len(parsed)
+    for file_idx = 1, res_size do
+        local data = parsed[file_idx]
+        local target_path = fs.combine(cur_dir, data['path'])
+        local source_path = data['path']
+        
+        shell.run("git", "get", author, proj, branch, source_path, target_path)
+    end
+end
+
+function filter_relevant_fields(raw)
+    local parsed = {}
+    parsed['path'] = raw['path']
+    parsed['name'] = raw['name']
+    parsed['type'] = raw['type']
+   return parsed
+end
+
+tArgs = {...}
+
+storedArgs = load_stored_args()
+
+function list_usages()
+    print('Usage: git get [git_owner repository branch] {path} {file-name}')
+    print('Usage: git pull [git_owner repository branch] [path]')
+    print('Usage: git ls [git_owner repository branch] [path]')
+    print('Usage: git status')
+    print('Usage: git owner [git_owner]')
+    print('Usage: git repo [repository]')
+    print('Usage: git branch [branch]')
+end
+
+if #tArgs == 0 then
+    list_usages()
+    return false
+end
+
+valid_opts = {"get"= true, "pull" = true, "ls" = true,  "status" = true, "branch" = true, "owner" = true, "repo" = true}
+
+option = tArgs[1]
+
+if valid_opts[option] == nil then
+    list_usages()
+    return false;
+end
+
+
+-- Fill paramters
+if option == "get" then
+    if #tArgs ~= 3 and #tArgs ~= 6 then
+        list_usages()
+        return false
+    end
+
+    if #tArgs == 3 then
+        paths = tArgs[2]
+        saveName = tArgs[3]
+    else
+        author = tArgs[2]
+        proj = tArgs[3]
+        branch = tArgs[4]
+        paths = tArgs[5]
+        saveName = tArgs[6]
+    end
+
+elseif option == "pull" or option == "ls" then
+    if #tArgs ~= 1 and #tArgs ~= 2 and #tArg ~= 4 and #tArg ~= 5 then
+        list_usages()
+        return false
+    end
+
+    if #tArgs == 2 then
+        paths = tArgs[2]
+    elseif #tArgs == 4 then
+        author = tArgs[2]
+        proj = tArgs[3]
+        branch = tArgs[4]
+
+    elseif #tArg ~= 5 then
+        author = tArgs[2]
+        proj = tArgs[3]
+        branch = tArgs[4]
+        paths = tArgs[5]
+    end
+
+elseif option == "owner" or option == "repo" or option == "branch" then
+    if #tArgs ~= 1 and #tArgs ~= 2 then
+        list_usages()
+        return false
+    end
+
+    if  #tArgs == 2 then 
+        if option == "owner" then
+            author = tArgs[2]
+        elseif option == "repo" then
+            proj = tArgs[2]
+        elseif option == "branch" then
+            branch = tArgs[2]
+        end
+    end
+end
+
+
+-- option = tArgs[1]
+-- author = tArgs[2]
+-- proj = tArgs[3]
+-- branch = tArgs[4]
+-- paths = tArgs[5]
+-- saveName = tArgs[6]
+
+if author == nil then
+    if storedArgs["author"] == nil then
+        print("Repo owner not defined")
+        return false
+    end
+
+    author = storedArgs["author"]
+end
+
+if proj == nil then
+    if storedArgs["proj"] == nil then
+        print("Repo not defined")
+        return false
+    end
+    proj = storedArgs["proj"]
+end
+
+if branch == nil then
+    if storedArgs["branch"] == nil then
+        print("Branch not defined")
+        return false
+    end
+    branch = storedArgs["branch"]
+end
+
+
+
 if option == 'get' then
     print('working on it...')
 elseif option == 'ls' then
@@ -163,6 +257,7 @@ elseif option == 'ls' then
     end
 elseif option == 'pull' then
     pull()
-elseif option == status then
-    load_stored_args()
+elseif option == "status" then
+    local values = load_stored_args()
+    print(values["author"]..">"..values["repo"]..">"..values["branch"])
 end
