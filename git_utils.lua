@@ -137,7 +137,7 @@ if #tArgs == 0 then
     return false
 end
 
-valid_opts = {"get"= true, "pull" = true, "ls" = true,  "status" = true, "branch" = true, "owner" = true, "repo" = true}
+valid_opts = {get= true, pull = true, ls = true,  status = true, branch = true, owner = true, repo = true}
 
 option = tArgs[1]
 
