@@ -16,7 +16,6 @@ function ls_into_repo(path)
     for file_idx = 1, res_size do
         local data = res[file_idx]
         local p_data = filter_relevant_fields(data)
-        print(json.stringify(p_data))
         parsed[p_data['path']] = p_data
 
         if p_data['type'] == 'dir' then
@@ -76,7 +75,6 @@ branch = tArgs[4]
 paths = tArgs[5]
 saveName = tArgs[6]
 
-
 function requestObject(url)
     if not url then error('Incorrect statement!') end
     write('Fetching: '..url..'... ')
@@ -115,7 +113,6 @@ if option == 'get' then
 elseif option == 'ls' then
     local res = ls_into_repo()
     if not res then return end
-    -- local res = json.parse(response)
 
     local res_size = t_len(res)
     print('')
