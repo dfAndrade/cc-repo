@@ -1,4 +1,4 @@
-require "libs.json"
+local json = require "libs.json"
 
 tArgs = {...}
 
