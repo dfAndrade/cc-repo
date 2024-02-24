@@ -6,6 +6,38 @@ function t_len(T)
    return count
 end
 
+function ls_into_repo()
+    local response = git_ls()
+    local res = json.parse(response)
+    local res_size = t_len(res)
+    local parsed = {}
+    for file_idx = 1, res_size do
+        local data = res[file_idx]
+        parsed[file_idx] = filter_relevant_fields(data)
+    end
+
+    return parsed
+end
+
+function pull()
+    local parsed = ls_into_repo()
+    local cur_dir = shell.dir()
+    for file_idx = 1, res_size do
+        local data = parsed[file_idx]
+        local target_path = fs.combine(cur_dir, data['path'])
+        local source_path = data['path']
+        
+        shell.run("git", author, proj, branch, source_path, target_path)
+    end
+end
+
+function filter_relevant_fields(raw)
+    let parsed = {}
+    parsed['path'] = raw['path']
+    parsed['path'] = raw['path']
+    parsed['type'] = raw['type']
+end
+
 tArgs = {...}
 
 if  #tArgs == 0 then
@@ -61,6 +93,9 @@ elseif option == 'ls' then
     local res = json.parse(response)
 
     local res_size = t_len(res)
+    print('')
+    print('N of files: '..res_size)
+    print('-----')
     for file_idx = 1, res_size do
         local data = res[file_idx]
         local path = data['path']
@@ -70,6 +105,6 @@ elseif option == 'ls' then
             print(path)
         end
     end
-
-   print('N of files: '..res_size)
+elseif option == 'pull' then
+    pull()
 end
