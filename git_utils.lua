@@ -8,8 +8,13 @@ function t_len(T)
    return count
 end
 
-function load_sotred_args() 
-    fs.open(
+function load_stored_args() 
+    local state = fs.open("/.git/state", r)
+    local content = json.parse(state.readAll())
+    print(content)
+    print(json.stringify(content))
+    state.close()
+    return content
 end
 
 function ls_into_repo(path)
@@ -76,7 +81,7 @@ end
 
 tArgs = {...}
 
-storedArgs = loadStoredArgs()
+storedArgs = load_stored_args()
 
 if  #tArgs == 0 then
    print('Usage: git [get/pull/ls] [git owner] [repository] [branch] [path] {file-name}')
@@ -152,6 +157,6 @@ elseif option == 'ls' then
     end
 elseif option == 'pull' then
     pull()
-elseif option == 'get' then
-    
+elseif option == status then
+    load_stored_args()
 end
