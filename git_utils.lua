@@ -6,14 +6,24 @@ function t_len(T)
    return count
 end
 
-function ls_into_repo()
-    local response = git_ls()
+function ls_into_repo(path)
+    local response = git_ls(path)
     local res = json.parse(response)
     local res_size = t_len(res)
     local parsed = {}
     for file_idx = 1, res_size do
         local data = res[file_idx]
-        parsed[file_idx] = filter_relevant_fields(data)
+        local p_data = filter_relevant_fields(data)
+        parsed[p_data['path']] = p_data
+
+        if parsed['type'] == 'dir' then
+            local r_files = ls_into_repo(parsed['path'])
+            local r_size = t_len(r_files)
+            for file_idx = 1, r_size do
+                local data = res[file_idx]
+                parsed[data['path']] = data
+            end
+        end
     end
 
     return parsed
@@ -23,6 +33,17 @@ function pull()
     local parsed = ls_into_repo()
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
+    for file_idx = 1, res_size do
+        local data = parsed[file_idx]
+        local target_path = fs.combine(cur_dir, data['path'])
+        local source_path = data['path']
+        
+        shell.run("git", "get", author, proj, branch, source_path, target_path)
+    end
+end
+
+function pullDir(table)
+   local res_size = t_len(parsed)
     for file_idx = 1, res_size do
         local data = parsed[file_idx]
         local target_path = fs.combine(cur_dir, data['path'])
@@ -80,20 +101,20 @@ function compileURL(auth,pro,bran,pat)
     return baseURL
 end
 
-function git_ls()
-    if paths == nil then
-        paths = ''
+function git_ls(p)
+    if p == nil then
+        p = ''
     end
 
-    return requestObject(compileURL(author, proj, branch, paths))
+    return requestObject(compileURL(author, proj, branch, p))
 end
 
 if option == 'get' then
     print('working on it...')
 elseif option == 'ls' then
-    local response = git_ls()
-    if not response then return end
-    local res = json.parse(response)
+    local res = ls_into_repo()
+    if not res then return end
+    -- local res = json.parse(response)
 
     local res_size = t_len(res)
     print('')
