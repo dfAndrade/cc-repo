@@ -77,7 +77,7 @@ saveName = tArgs[6]
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
-    write('Fetching: '..url..'... ')
+    -- write('Fetching: '..url..'... ')
     http.request(url)
     local requesting = true
     while requesting do
@@ -97,6 +97,7 @@ end
 
 function compileURL(auth,pro,bran,pat)
     baseURL = 'https://api.github.com/repos/'..auth..'/'..pro..'/contents/'..pat
+    print(".../"..auth..'/'..pro..'/contents/'..pat)
     return baseURL
 end
 
