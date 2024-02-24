@@ -31,8 +31,9 @@ end
 
 function remove_filter_path(raw_path)
     local res = raw_path
-    if paths not nil:
-            res = string.gsub(raw_path, paths, "")
+    if paths ~= nil then
+        res = string.gsub(raw_path, paths, "")
+    end
     return res
 end
 
