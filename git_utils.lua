@@ -34,8 +34,8 @@ function pull()
     local parsed = ls_into_repo()
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
-    for file_idx = 1, res_size do
-        local data = parsed[file_idx]
+    for i, v in ipairs(parsed) do
+        local data = v
         local target_path = fs.combine(cur_dir, data['path'])
         local source_path = data['path']
         
