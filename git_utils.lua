@@ -1,6 +1,6 @@
-local folderOfThisFile = (...):match("(.-)[^%.]+$") -- returns 'lib.foo.'
--- local json = require "libs.json"
-local json = require(folderOfThisFile .. 'libs.json')
+-- local folderOfThisFile = (...):match("(.-)[^%.]+$") -- returns 'lib.foo.'
+local json = require ".libs.lua.json"
+-- local json = require(folderOfThisFile .. 'libs.json')
 
 function t_len(T)
    local count = 0
