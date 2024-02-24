@@ -12,11 +12,11 @@ function load_stored_args()
     local state = fs.open("/.git/state", "r")
     local raw = state.readAll()
     local content
-    if raw == "" then
+    if raw == "" or raw == "\n" then
         content = "{}"
     end
     
-    content = json.parse(raw)
+    content = json.parse(content)
     print(content)
     print(json.stringify(content))
     state.close()
