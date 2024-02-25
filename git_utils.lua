@@ -297,8 +297,6 @@ elseif option == 'ls' then
 
     local res_size = t_len(res)
     print('')
-    print('N of files: '..res_size)
-    print('-----')
     print_sorted(res)
 elseif option == 'pull' then
     pull()
