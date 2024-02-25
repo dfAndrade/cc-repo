@@ -11,7 +11,7 @@ end
 function load_stored_args() 
     local state = fs.open("/.git/state", "r")
     local raw = state.readAll()
-    local content
+    local content = raw
     if raw == "" or raw == "\n" then
         content = "{}"
     end
@@ -137,7 +137,7 @@ if #tArgs == 0 then
     return false
 end
 
-valid_opts = {get= true, pull = true, ls = true,  status = true, branch = true, owner = true, repo = true}
+valid_opts = {get = true, pull = true, ls = true,  status = true, branch = true, owner = true, repo = true}
 
 option = tArgs[1]
 
