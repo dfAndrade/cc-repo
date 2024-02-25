@@ -284,7 +284,7 @@ elseif option == "owner" then
     if #tArgs == 2 then
         write_value_state(write_value_state("owner", author))
     else
-        print(values["author"])
+        print(author)
     end
 
 elseif option == "repo" then
