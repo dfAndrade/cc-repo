@@ -301,7 +301,7 @@ elseif option == "owner" then
 
 elseif option == "repo" then
     if #tArgs == 2 then
-        write_value_state(write_value_state("owner", proj))
+        write_value_state(write_value_state("repo", proj))
         print(author..">"..proj..">"..branch)
     else
         print(proj)
