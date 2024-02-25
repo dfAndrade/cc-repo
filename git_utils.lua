@@ -21,6 +21,26 @@ function load_stored_args()
     return content
 end
 
+function write_value_state(field, value)
+    local state = fs.open("/.git/state", "r")
+    local raw = state.readAll()
+    local content = raw
+    if raw == "" or raw == "\n" then
+        content = "{}"
+    end
+    
+    content = json.parse(content)
+    state.close()
+
+
+    content[field] = value
+    local state = fs.open("/.git/state", "w")
+    state.write(json.stringify(content))
+    state.close()
+
+    return content
+end
+
 function ls_into_repo(path)
     local response = git_ls(path)
     local res = json.parse(response)
@@ -87,7 +107,6 @@ end
 
 function compileURL(auth,pro,bran,pat)
     baseURL = 'https://api.github.com/repos/'..auth..'/'..pro..'/contents/'..pat
-    print(".../"..auth..'/'..pro..'/contents/'..pat)
     return baseURL
 end
 
@@ -259,5 +278,26 @@ elseif option == 'pull' then
     pull()
 elseif option == "status" then
     local values = load_stored_args()
-    print(values["author"]..">"..values["repo"]..">"..values["branch"])
+    print(values["owner"]..">"..values["repo"]..">"..values["branch"])
+
+elseif option == "owner" then
+    if #tArgs == 2 then
+        write_value_state(write_value_state("owner", author))
+    else
+        print(values["author"])
+    end
+
+elseif option == "repo" then
+    if #tArgs == 2 then
+        write_value_state(write_value_state("owner", proj))
+    else
+        print(proj)
+    end
+
+elseif option == "branch" then
+    if #tArgs == 2 then
+        write_value_state(write_value_state("branch", branch))
+    else
+        print(branch)
+    end
 end
