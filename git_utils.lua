@@ -16,12 +16,12 @@ end
 
 function print_sorted(m_table)
     local tkeys = {}
-    for k in pairs(t) do table.insert(tkeys, k) end
+    for k in pairs(m_table) do table.insert(tkeys, k) end
     table.sort(tkeys)
     for _, k in ipairs(tkeys) do
-        local val = t[k]
+        local val = m_table[k]
         if val['type'] ~= 'dir' then
-            print(t[k])
+            print(val['path'])
         end
     end
 end
