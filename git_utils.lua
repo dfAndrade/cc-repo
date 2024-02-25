@@ -166,7 +166,7 @@ if option == "get" then
     end
 
 elseif option == "pull" or option == "ls" then
-    if #tArgs ~= 1 and #tArgs ~= 2 and #tArg ~= 4 and #tArg ~= 5 then
+    if #tArgs ~= 1 and #tArgs ~= 2 and #tArgs ~= 4 and #tArgs ~= 5 then
         list_usages()
         return false
     end
