@@ -2,6 +2,20 @@
 -- local json = require(folderOfThisFile .. 'libs.json')
 local json = require ".libs.lua.json"
 
+-- ########################
+-- # Function definitions #
+-- ########################
+
+function list_usages()
+    print('Usage: git get [git_owner repository branch] {path} {file-name}')
+    print('Usage: git pull [git_owner repository branch] [path]')
+    print('Usage: git ls [git_owner repository branch] [path]')
+    print('Usage: git status')
+    print('Usage: git owner [git_owner]')
+    print('Usage: git repo [repository]')
+    print('Usage: git branch [branch]')
+end
+
 function t_len(T)
    local count = 0
    for _ in pairs(T) do count = count + 1 end
@@ -44,10 +58,9 @@ end
 function ls_into_repo(path)
     local response = git_ls(path)
     local res = json.parse(response)
-    local res_size = t_len(res)
     local parsed = {}
-    for file_idx = 1, res_size do
-        local data = res[file_idx]
+    for file_idx, file_data do
+        local data = file_data
         local p_data = filter_relevant_fields(data)
         parsed[p_data['path']] = p_data
 
@@ -90,7 +103,32 @@ function get(source_path, target_path)
     shell.run("wget", source, target_path)
 end
 
--- Update values from state
+function git_ls(p)
+    if p == nil then
+        p = ''
+    end
+
+    return requestObject(compileURL(author, proj, branch, p))
+end
+
+function pullDir(table)
+    local res_size = t_len(parsed)
+     for file_idx = 1, res_size do
+         local data = parsed[file_idx]
+         local target_path = fs.combine(cur_dir, data['path'])
+         local source_path = data['path']
+         
+         get(source_path, target_path)
+     end
+ end
+
+ function filter_relevant_fields(raw)
+    local parsed = {}
+    parsed['path'] = raw['path']
+    parsed['name'] = raw['name']
+    parsed['type'] = raw['type']
+   return parsed
+end
 
 function requestObject(url)
     if not url then error('Incorrect statement!') end
@@ -120,46 +158,17 @@ function compileGet(auth, pro, bran, pat)
     return 'https://raw.githubusercontent.com/'..auth..'/'..pro..'/'..bran..'/'..pat
 end
 
-function git_ls(p)
-    if p == nil then
-        p = ''
-    end
 
-    return requestObject(compileURL(author, proj, branch, p))
-end
 
-function pullDir(table)
-   local res_size = t_len(parsed)
-    for file_idx = 1, res_size do
-        local data = parsed[file_idx]
-        local target_path = fs.combine(cur_dir, data['path'])
-        local source_path = data['path']
-        
-        shell.run("git", "get", author, proj, branch, source_path, target_path)
-    end
-end
-
-function filter_relevant_fields(raw)
-    local parsed = {}
-    parsed['path'] = raw['path']
-    parsed['name'] = raw['name']
-    parsed['type'] = raw['type']
-   return parsed
-end
+-- #########################
+-- # Actual program starts #
+-- #########################
 
 tArgs = {...}
 
 storedArgs = load_stored_args()
 
-function list_usages()
-    print('Usage: git get [git_owner repository branch] {path} {file-name}')
-    print('Usage: git pull [git_owner repository branch] [path]')
-    print('Usage: git ls [git_owner repository branch] [path]')
-    print('Usage: git status')
-    print('Usage: git owner [git_owner]')
-    print('Usage: git repo [repository]')
-    print('Usage: git branch [branch]')
-end
+
 
 if #tArgs == 0 then
     list_usages()
@@ -230,14 +239,6 @@ elseif option == "owner" or option == "repo" or option == "branch" then
         end
     end
 end
-
-
--- option = tArgs[1]
--- author = tArgs[2]
--- proj = tArgs[3]
--- branch = tArgs[4]
--- paths = tArgs[5]
--- saveName = tArgs[6]
 
 if author == nil then
     if storedArgs["owner"] == nil then
