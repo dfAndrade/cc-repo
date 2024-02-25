@@ -322,7 +322,6 @@ elseif option == "branch" then
     else
         print(branch)
     end
-end
 
 elseif option == "status" then
     if #tArgs == 4 then
