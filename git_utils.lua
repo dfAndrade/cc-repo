@@ -178,7 +178,7 @@ elseif option == "pull" or option == "ls" then
         proj = tArgs[3]
         branch = tArgs[4]
 
-    elseif #tArg ~= 5 then
+    elseif #tArgs ~= 5 then
         author = tArgs[2]
         proj = tArgs[3]
         branch = tArgs[4]
