@@ -328,7 +328,7 @@ elseif option == "status" then
         write_value_state("owner", author)
         write_value_state("repo", proj)
         write_value_state("branch", branch)
-    else
-        print(author..">"..proj..">"..branch)
     end
+    
+    print(author..">"..proj..">"..branch)
 end
