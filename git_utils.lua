@@ -211,20 +211,20 @@ end
 -- saveName = tArgs[6]
 
 if author == nil then
-    if storedArgs["author"] == nil then
+    if storedArgs["owner"] == nil then
         print("Repo owner not defined")
         return false
     end
 
-    author = storedArgs["author"]
+    author = storedArgs["owner"]
 end
 
 if proj == nil then
-    if storedArgs["proj"] == nil then
+    if storedArgs["repo"] == nil then
         print("Repo not defined")
         return false
     end
-    proj = storedArgs["proj"]
+    proj = storedArgs["repo"]
 end
 
 if branch == nil then
