@@ -5,6 +5,14 @@ local json = require ".libs.lua.json"
 -- # Function definitions #
 -- ########################
 
+
+local function deleteIfExists(path)
+    local res = shell.resolve(path)
+    if fs.exists(res) then
+        fs.delete(res)
+    end
+end
+
 function list_usages()
     print('Usage: git get [git_owner repository branch] {path} {file-name}')
     print('Usage: git pull [git_owner repository branch] [path]')
@@ -110,9 +118,7 @@ end
 
 function get(source_path, target_path)
     local source = compileGet(author, proj, branch, source_path)
-    if fs.exists(target_path) then
-        fs.delete(target_path)
-    end
+    deleteIfExists(target_path)
     shell.run("wget", source, target_path)
 end
 
