@@ -59,7 +59,7 @@ function ls_into_repo(path)
     local response = git_ls(path)
     local res = json.parse(response)
     local parsed = {}
-    for file_idx, file_data do
+    for file_idx, file_data in pairs(res) do
         local data = file_data
         local p_data = filter_relevant_fields(data)
         parsed[p_data['path']] = p_data
