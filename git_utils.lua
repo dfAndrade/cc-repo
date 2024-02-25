@@ -10,7 +10,7 @@ function list_usages()
     print('Usage: git get [git_owner repository branch] {path} {file-name}')
     print('Usage: git pull [git_owner repository branch] [path]')
     print('Usage: git ls [git_owner repository branch] [path]')
-    print('Usage: git status')
+    print('Usage: git status [git_owner repository branch]')
     print('Usage: git owner [git_owner]')
     print('Usage: git repo [repository]')
     print('Usage: git branch [branch]')
@@ -238,6 +238,18 @@ elseif option == "owner" or option == "repo" or option == "branch" then
             branch = tArgs[2]
         end
     end
+
+elseif option == "status" then
+    if #tArgs ~= 1 and #tArgs ~= 4 then
+        list_usages()
+        return false
+    end
+
+    if  #tArgs == 4 then 
+        author = tArgs[2]
+        proj = tArgs[3]
+        branch = tArgs[4]
+    end
 end
 
 if author == nil then
@@ -287,13 +299,9 @@ elseif option == 'ls' then
     end
 elseif option == 'pull' then
     pull()
-elseif option == "status" then
-    local values = load_stored_args()
-    print(author..">"..proj..">"..branch)
-
 elseif option == "owner" then
     if #tArgs == 2 then
-        write_value_state(write_value_state("owner", author))
+        write_value_state("owner", author)
         print(author..">"..proj..">"..branch)
     else
         print(author)
@@ -301,7 +309,7 @@ elseif option == "owner" then
 
 elseif option == "repo" then
     if #tArgs == 2 then
-        write_value_state(write_value_state("repo", proj))
+        write_value_state("repo", proj)
         print(author..">"..proj..">"..branch)
     else
         print(proj)
@@ -309,9 +317,19 @@ elseif option == "repo" then
 
 elseif option == "branch" then
     if #tArgs == 2 then
-        write_value_state(write_value_state("branch", branch))
+        write_value_state("branch", branch)
         print(author..">"..proj..">"..branch)
     else
         print(branch)
+    end
+end
+
+elseif option == "status" then
+    if #tArgs == 4 then
+        write_value_state("owner", author)
+        write_value_state("repo", proj)
+        write_value_state("branch", branch)
+    else
+        print(author..">"..proj..">"..branch)
     end
 end
