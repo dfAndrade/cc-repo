@@ -8,7 +8,7 @@ function t_len(T)
    return count
 end
 
-function load_stored_args() 
+function load_stored_args()
     local state = fs.open("/.git/state", "r")
     local raw = state.readAll()
     local content = raw
@@ -84,6 +84,12 @@ function pull()
     end
 end
 
+function get(source_path, target_path)
+    local source = compileGet(author, proj, branch, source_path)
+
+    shell.run("wget", source, target_path)
+end
+
 -- Update values from state
 
 function requestObject(url)
@@ -108,6 +114,10 @@ end
 function compileURL(auth,pro,bran,pat)
     baseURL = 'https://api.github.com/repos/'..auth..'/'..pro..'/contents/'..pat
     return baseURL
+end
+
+function compileGet(auth, pro, bran, pat)
+    return 'https://raw.githubusercontent.com/'..auth..'/'..pro..'/'..bran..'/'..pat
 end
 
 function git_ls(p)
@@ -257,7 +267,7 @@ end
 
 
 if option == 'get' then
-    print('working on it...')
+    get(paths, saveName)
 elseif option == 'ls' then
     local res = ls_into_repo(paths)
     if not res then return end
@@ -278,11 +288,12 @@ elseif option == 'pull' then
     pull()
 elseif option == "status" then
     local values = load_stored_args()
-    print(values["owner"]..">"..values["repo"]..">"..values["branch"])
+    print(author..">"..proj..">"..branch)
 
 elseif option == "owner" then
     if #tArgs == 2 then
         write_value_state(write_value_state("owner", author))
+        print(author..">"..proj..">"..branch)
     else
         print(author)
     end
@@ -290,6 +301,7 @@ elseif option == "owner" then
 elseif option == "repo" then
     if #tArgs == 2 then
         write_value_state(write_value_state("owner", proj))
+        print(author..">"..proj..">"..branch)
     else
         print(proj)
     end
@@ -297,6 +309,7 @@ elseif option == "repo" then
 elseif option == "branch" then
     if #tArgs == 2 then
         write_value_state(write_value_state("branch", branch))
+        print(author..">"..proj..">"..branch)
     else
         print(branch)
     end
