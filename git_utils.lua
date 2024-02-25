@@ -109,7 +109,9 @@ end
 
 function get(source_path, target_path)
     local source = compileGet(author, proj, branch, source_path)
-
+    if fs.exists(target_path) then
+        fs.delete(target_path)
+    end
     shell.run("wget", source, target_path)
 end
 
@@ -298,12 +300,6 @@ elseif option == 'ls' then
     print('N of files: '..res_size)
     print('-----')
     print_sorted(res)
-    -- for i, v in pairs(res) do
-        -- local path = v['path']
-        -- if v['type'] ~= 'dir' then
-            -- print(path)
-        -- end
-    -- end
 elseif option == 'pull' then
     pull()
 elseif option == "owner" then
