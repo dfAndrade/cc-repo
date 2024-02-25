@@ -14,6 +14,18 @@ function list_usages()
     print('Usage: git branch [branch]')
 end
 
+function print_sorted(m_table)
+    local tkeys = {}
+    for k in pairs(t) do table.insert(tkeys, k) end
+    table.sort(tkeys)
+    for _, k in ipairs(tkeys) do
+        local val = t[k]
+        if val['type'] ~= 'dir' then
+            print(t[k])
+        end
+    end
+end
+
 function t_len(T)
    local count = 0
    for _ in pairs(T) do count = count + 1 end
@@ -285,14 +297,13 @@ elseif option == 'ls' then
     print('')
     print('N of files: '..res_size)
     print('-----')
-    for i, v in pairs(res) do
-        local path = v['path']
-        if v['type'] == 'dir' then
-            print(path..'/')
-        else
-            print(path)
-        end
-    end
+    print_sorted(res)
+    -- for i, v in pairs(res) do
+        -- local path = v['path']
+        -- if v['type'] ~= 'dir' then
+            -- print(path)
+        -- end
+    -- end
 elseif option == 'pull' then
     pull()
 elseif option == "owner" then
