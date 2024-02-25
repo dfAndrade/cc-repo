@@ -1,5 +1,3 @@
--- local folderOfThisFile = (...):match("(.-)[^%.]+$") -- returns 'lib.foo.'
--- local json = require(folderOfThisFile .. 'libs.json')
 local json = require ".libs.lua.json"
 
 -- ########################
@@ -168,8 +166,6 @@ tArgs = {...}
 
 storedArgs = load_stored_args()
 
-
-
 if #tArgs == 0 then
     list_usages()
     return false
@@ -329,6 +325,6 @@ elseif option == "status" then
         write_value_state("repo", proj)
         write_value_state("branch", branch)
     end
-    
+
     print(author..">"..proj..">"..branch)
 end
