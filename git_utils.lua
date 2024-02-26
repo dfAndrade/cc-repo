@@ -1,4 +1,4 @@
--- v6
+-- v7
 local json = require ".libs.lua.json"
 
 -- ########################
@@ -105,10 +105,6 @@ function pull()
     local parsed = ls_into_repo(paths)
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
-    for i, v in pairs(parsed) do
-        print("target: "..v.path..":"..v.type)
-    end
-
     for i, v in pairs(parsed) do
         local data = v
         if data['type'] ~= 'dir' then
