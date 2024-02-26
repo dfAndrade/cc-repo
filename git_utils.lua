@@ -1,4 +1,4 @@
--- v1
+-- v2
 local json = require ".libs.lua.json"
 
 -- ########################
@@ -109,7 +109,7 @@ function pull()
     for i, v in pairs(parsed) do
         local data = v
         
-        local target_path = remove_filter_path(data['path'])
+        local target_path = fs.combine(remove_filter_path(shell.dir(), data['path']))
         local source_path = data['path']
         
         shell.run("git", "get", author, proj, branch, source_path, target_path)
