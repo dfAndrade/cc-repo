@@ -106,7 +106,7 @@ function pull()
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
     for i, v in pairs(parsed) do
-        print("target: "..v.path..":"..v.dir)
+        print("target: "..v.path..":"..v.type)
     end
 
     for i, v in pairs(parsed) do
