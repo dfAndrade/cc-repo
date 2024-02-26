@@ -111,7 +111,7 @@ function pull()
 
     for i, v in pairs(parsed) do
         local data = v
-        if val['type'] ~= 'dir' then
+        if data['type'] ~= 'dir' then
             local target_path = "/"..fs.combine(shell.dir(), remove_filter_path(data['path']))
             local source_path = data['path']
 
