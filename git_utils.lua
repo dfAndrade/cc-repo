@@ -108,7 +108,7 @@ function pull()
     for i, v in pairs(parsed) do
         local data = v
         
-        local target_path = fs.combine("/"..shell.dir(), remove_filter_path(data['path']))
+        local target_path = "/"..fs.combine(shell.dir(), remove_filter_path(data['path']))
         local source_path = data['path']
         
        get(source_path, target_path)
@@ -128,17 +128,6 @@ function git_ls(p)
 
     return requestObject(compileURL(author, proj, branch, p))
 end
-
-function pullDir(table)
-    local res_size = t_len(parsed)
-     for file_idx = 1, res_size do
-         local data = parsed[file_idx]
-         local target_path = "/"..fs.combine(cur_dir, data['path'])
-         local source_path = data['path']
-         
-         get(source_path, target_path)
-     end
- end
 
  function filter_relevant_fields(raw)
     local parsed = {}
