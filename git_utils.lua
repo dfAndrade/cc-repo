@@ -1,4 +1,4 @@
--- v3
+-- v4
 local json = require ".libs.lua.json"
 
 -- ########################
@@ -7,9 +7,8 @@ local json = require ".libs.lua.json"
 
 
 local function deleteIfExists(path)
-    local res = shell.resolve(path)
-    if fs.exists(res) then
-        fs.delete(res)
+    if fs.exists(path) then
+        fs.delete(path)
     end
 end
 
@@ -109,7 +108,7 @@ function pull()
     for i, v in pairs(parsed) do
         local data = v
         
-        local target_path = fs.combine(shell.dir(), remove_filter_path(data['path']))
+        local target_path = fs.combine("/".shell.dir(), remove_filter_path(data['path']))
         local source_path = data['path']
         
         shell.run("git", "get", author, proj, branch, source_path, target_path)
