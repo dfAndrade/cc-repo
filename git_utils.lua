@@ -106,12 +106,17 @@ function pull()
     local cur_dir = shell.dir()
     local res_size = t_len(parsed)
     for i, v in pairs(parsed) do
+        print("target: "..v.path..":"..v.dir)
+    end
+
+    for i, v in pairs(parsed) do
         local data = v
-        
-        local target_path = "/"..fs.combine(shell.dir(), remove_filter_path(data['path']))
-        local source_path = data['path']
-        
-       get(source_path, target_path)
+        if val['type'] ~= 'dir' then
+            local target_path = "/"..fs.combine(shell.dir(), remove_filter_path(data['path']))
+            local source_path = data['path']
+
+            get(source_path, target_path)
+        end
     end
 end
 
