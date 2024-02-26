@@ -1,4 +1,4 @@
--- v5
+-- v6
 local json = require ".libs.lua.json"
 
 -- ########################
@@ -133,7 +133,7 @@ function pullDir(table)
     local res_size = t_len(parsed)
      for file_idx = 1, res_size do
          local data = parsed[file_idx]
-         local target_path = fs.combine(cur_dir, data['path'])
+         local target_path = "/"..fs.combine(cur_dir, data['path'])
          local source_path = data['path']
          
          get(source_path, target_path)
