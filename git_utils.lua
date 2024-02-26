@@ -108,7 +108,7 @@ function pull()
     for i, v in pairs(parsed) do
         local data = v
         
-        local target_path = fs.combine("/".shell.dir(), remove_filter_path(data['path']))
+        local target_path = fs.combine("/"..shell.dir(), remove_filter_path(data['path']))
         local source_path = data['path']
         
         shell.run("git", "get", author, proj, branch, source_path, target_path)
